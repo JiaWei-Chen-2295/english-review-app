@@ -7,7 +7,7 @@ object NavigationItems {
         BottomNavItem(
             name = "Home",
             route = "home",
-            icon = R.drawable._home
+            icon = R.drawable._home_2
         ),
         BottomNavItem(
             name = "Import",
