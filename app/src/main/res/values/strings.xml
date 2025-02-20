@@ -2,6 +2,6 @@
     <string name="app_name">english_review</string>
     <string name="roll">Roll</string>
     <string name="home">Home</string>
+    <string name="_import">Import</string>
     <string name="profile">Profile</string>
-    <string name="settings">Settings</string>
 </resources>

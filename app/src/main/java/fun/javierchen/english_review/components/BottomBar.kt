@@ -9,10 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import `fun`.javierchen.english_review.model.BottomNavItem
+import `fun`.javierchen.english_review.util.ResourceUtils
 
 
 @Composable
@@ -29,11 +31,11 @@ fun AppBottomBar(
                 icon = {
                     Icon(
                         painter = painterResource(id = item.icon),
-                        contentDescription = item.name,
+                        contentDescription = stringResource(item.nameRes),
                         modifier = Modifier.size(24.dp)
                     )
                 },
-                label = { Text(text = item.name) },
+                label = { Text(text = stringResource(item.nameRes)) },
                 selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {

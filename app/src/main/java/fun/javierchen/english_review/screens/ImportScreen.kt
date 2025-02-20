@@ -5,5 +5,7 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun ImportScreen() {
-    Text(text = "Import Screen")
+    Text(
+        text = ""
+    )
 }

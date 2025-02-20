@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">english_review</string>
+    <string name="roll">摇骰子</string>
+    <string name="home">主页</string>
+    <string name="_import">导入</string>
+    <string name="profile">我</string>
+
+</resources>
