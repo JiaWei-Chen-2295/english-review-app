@@ -5,7 +5,7 @@
     <string name="home">主页</string>
     <string name="_import">导入</string>
     <string name="profile">我</string>
-    <string name="choose_file">选择文本文件</string>
+    <string name="choose_file">选择文档 (Word/PDF/Excel)</string>
     <string name="else_input_text">或直接输入文本</string>
     <string name="input_type">可粘贴或输入学习内容...</string>
 </resources>

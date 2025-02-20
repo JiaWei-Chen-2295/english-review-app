@@ -51,9 +51,12 @@ fun ImportScreen() {
     ) { uri ->
         uri?.let {
             scope.launch {
-                textState = context.contentResolver.openInputStream(it)?.use { stream ->
+                context.contentResolver.openInputStream(it)?.use { stream ->
+                    // 此处实际需要根据文件类型使用不同解析方式
+                    // 例如：Apache POI 处理 Office 文件
+                    // 当前实现仅适合文本文件
                     stream.bufferedReader().use { reader -> reader.readText() }
-                } ?: ""
+                }
             }
         }
     }
