@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import `fun`.javierchen.english_review.model.BottomNavItem
-import `fun`.javierchen.english_review.util.ResourceUtils
 
 
 @Composable

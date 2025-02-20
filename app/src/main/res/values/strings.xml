@@ -4,4 +4,8 @@
     <string name="home">Home</string>
     <string name="_import">Import</string>
     <string name="profile">Profile</string>
+    <string name="choose_file">please choose a file</string>
+    <string name="else_input_text">or you can input text here</string>
+    <string name="input_type">you can paste or input the content of study</string>
+
 </resources>

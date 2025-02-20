@@ -1,8 +1,9 @@
 package `fun`.javierchen.english_review.model
 
+import ImportScreen
 import `fun`.javierchen.english_review.R
 import `fun`.javierchen.english_review.screens.DiceRollerApp
-import `fun`.javierchen.english_review.screens.ImportScreen
+
 import `fun`.javierchen.english_review.screens.ProfileScreen
 
 /**
