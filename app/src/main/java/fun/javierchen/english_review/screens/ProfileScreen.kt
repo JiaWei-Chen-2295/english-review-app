@@ -68,7 +68,41 @@ fun ProfileScreen() {
         HeatMapCell(3, 3, 1),
         HeatMapCell(5, 4, 1),
         HeatMapCell(2, 5, 1),
-        HeatMapCell(7, 6, 1)
+        HeatMapCell(7, 6, 1),
+
+        HeatMapCell(6, 0, 2),
+        HeatMapCell(9, 1, 2),
+        HeatMapCell(3, 2, 2),
+        HeatMapCell(3, 3, 2),
+        HeatMapCell(4, 4, 2),
+        HeatMapCell(0, 5, 2),
+        HeatMapCell(7, 6, 2),
+
+        HeatMapCell(6, 0, 3),
+        HeatMapCell(5, 1, 3),
+        HeatMapCell(3, 2, 3),
+        HeatMapCell(3, 3, 3),
+        HeatMapCell(0, 4, 3),
+        HeatMapCell(2, 5, 3),
+        HeatMapCell(4, 6, 3),
+
+
+        HeatMapCell(6, 0, 4),
+        HeatMapCell(5, 1, 4),
+        HeatMapCell(3, 2, 4),
+        HeatMapCell(3, 3, 4),
+        HeatMapCell(0, 4, 4),
+        HeatMapCell(2, 5, 4),
+        HeatMapCell(4, 6, 4),
+
+        HeatMapCell(6, 0, 5),
+        HeatMapCell(9, 1, 5),
+        HeatMapCell(0, 2, 5),
+        HeatMapCell(3, 3, 5),
+        HeatMapCell(5, 4, 5),
+        HeatMapCell(2, 5, 5),
+        HeatMapCell(7, 6, 5),
+
     )
 
     fun generateFullHeatMapData(rawData: List<HeatMapCell>): List<HeatMapCell> {
@@ -97,7 +131,7 @@ fun ProfileScreen() {
         }
 
         // 展示数据卡片
-        item{
+        item {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxWidth()
@@ -137,8 +171,7 @@ fun ProfileScreen() {
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(20.dp)
-                        .fillMaxSize(),
+                        .padding(20.dp),
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
@@ -161,37 +194,48 @@ fun ProfileScreen() {
         }
     }
 }
+
 @Composable
 private fun UserProfileSection(avatarUrl: String, userName: String, learningDays: Int) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f),
+                shape = MaterialTheme.shapes.medium
+            )
+            .padding(16.dp)
     ) {
         AsyncImage(
             model = avatarUrl,
             contentDescription = "用户头像",
-            modifier = Modifier
-                .size(80.dp)
-                .clip(CircleShape)
-                .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape),
             error = painterResource(R.drawable.default_avatar), // 添加错误占位图
-            placeholder = painterResource(R.drawable.loading_avatar) // 添加加载占位图
-
+            placeholder = painterResource(R.drawable.loading_avatar), // 添加加载占位图
+            modifier = Modifier
+                .size(96.dp)
+                .clip(CircleShape)
+                .border(
+                    width = 2.dp,
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
+                    shape = CircleShape
+                )
         )
 
-        Column {
+        Column(Modifier.padding(start = 16.dp)) {
             Text(
                 text = userName,
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = "已坚持学习 $learningDays 天",
+                text = "📅 已坚持学习 $learningDays 天",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
+
 }
 
 @Composable

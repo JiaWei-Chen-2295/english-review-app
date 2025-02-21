@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -88,9 +89,11 @@ fun HeatMap(
                 columns = GridCells.Fixed(7),
                 modifier = Modifier
                     .weight(1f)
+                    .fillMaxWidth()  // 新增
                     .padding(end = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(spacing),
                 horizontalArrangement = Arrangement.spacedBy(spacing)
+
             ) {
                 items(heatMapData.sortedWith(compareBy(
                     { it.weekNumber },
