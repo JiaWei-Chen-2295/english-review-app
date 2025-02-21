@@ -71,6 +71,14 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    // 数据持久化
+    implementation("androidx.datastore:datastore-preferences:1.1.2")
+
+    // optional - RxJava2 support
+    implementation("androidx.datastore:datastore-preferences-rxjava2:1.1.2")
+
+    // optional - RxJava3 support
+    implementation("androidx.datastore:datastore-preferences-rxjava3:1.1.2")
 
 //    用于顶部应用栏
     implementation(platform("androidx.compose:compose-bom:2025.01.01"))
