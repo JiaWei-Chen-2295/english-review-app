@@ -1,4 +1,4 @@
-package `fun`.javierchen.english_review.ui.theme
+package com.example.compose
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF5D5791)

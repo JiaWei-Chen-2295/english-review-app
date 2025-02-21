@@ -8,13 +8,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import `fun`.javierchen.english_review.components.AppBottomBar
 import `fun`.javierchen.english_review.model.NavigationItems
-import `fun`.javierchen.english_review.ui.theme.English_reviewTheme
+import `fun`.javierchen.english_review.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            English_reviewTheme {
+            AppTheme {
                 MainScreen()
             }
         }

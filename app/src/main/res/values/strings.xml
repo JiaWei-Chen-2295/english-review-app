@@ -7,5 +7,6 @@
     <string name="choose_file">choose this file type (Word/PDF/Excel)</string>
     <string name="else_input_text">or you can input text here</string>
     <string name="input_type">you can paste or input the content of study</string>
+    <string name="title_activity_setting">SettingActivity</string>
 
 </resources>

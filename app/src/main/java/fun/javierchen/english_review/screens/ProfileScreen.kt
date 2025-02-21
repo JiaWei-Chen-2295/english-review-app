@@ -1,5 +1,7 @@
 package `fun`.javierchen.english_review.screens
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -15,8 +17,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,14 +29,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import `fun`.javierchen.english_review.R
+import `fun`.javierchen.english_review.activities.SettingActivity
 import `fun`.javierchen.english_review.components.HeatMap
 import `fun`.javierchen.english_review.model.HeatMapCell
 
+/**
+ * 扩展函数-跳转设置页面
+ */
+private fun navigateToSettings(context: Context) {
+    val intent = Intent(context, SettingActivity::class.java)
+    context.startActivity(intent)
+}
 
 @Composable
 fun ProfileScreen() {
@@ -192,6 +206,39 @@ fun ProfileScreen() {
                 words = listOf("Ambiguous", "Phenomenon", "Quintessential", "Ephemeral")
             )
         }
+
+        item {
+            val context = LocalContext.current
+            Card(onClick = { navigateToSettings(context) },
+                modifier = Modifier
+                    .fillMaxWidth(),
+                shape = MaterialTheme.shapes.medium,
+                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                ) {
+                Row(
+                    modifier = Modifier.padding(18.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(Icons.Rounded.Settings, contentDescription = "Setting")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = "设置",
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.SemiBold
+                        ))
+                }
+            }
+        }
+        item{
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth().padding(16.dp)
+            ) {
+                Text(text = "© 2025 Javier Chen")
+            }
+
+        }
+
     }
 }
 
