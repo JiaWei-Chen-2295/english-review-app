@@ -4,27 +4,33 @@ import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import `fun`.javierchen.english_review.model.ThemeSettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-// 定义全局常量
+// 全局常量
 private val THEME_MODE = intPreferencesKey("dark_theme")
+private val IS_DYNAMIC_THEME = booleanPreferencesKey("dark_theme")
+
 
 /**
  * 全局主题管理器
  */
 object ThemeManager {
     private val _themeMode = mutableStateOf(2)
+    private val _dynamicTheme = mutableStateOf(false)
     /**
      *  0=light, 1=dark, 2=system
      */
     val themeMode: State<Int> get() = _themeMode
+    val isDynamicTheme: State<Boolean> get() = _dynamicTheme
 
 
     // 需要传入 context 参数
@@ -35,18 +41,36 @@ object ThemeManager {
         }
     }
 
+    fun toggleDynamicTheme(context: Context, isDynamicTheme: Boolean) {
+        _dynamicTheme.value = isDynamicTheme
+        CoroutineScope(Dispatchers.IO).launch {
+            saveDynamicThemePreference(context, isDynamicTheme)
+        }
+    }
+
     private suspend fun saveThemePreference(context: Context, mode: Int) {
         context.dataStore.edit { preferences ->
             preferences[THEME_MODE] = mode
         }
     }
 
+    private suspend fun saveDynamicThemePreference(context: Context, isDynamicTheme: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[IS_DYNAMIC_THEME] = isDynamicTheme
+        }
+    }
+
+
     // 添加初始化方法
     suspend fun initialize(context: Context) {
         val saved = context.dataStore.data.map { preferences:Preferences ->
-            preferences[THEME_MODE] ?: 2
+            ThemeSettings(
+                themeMode = preferences[THEME_MODE] ?: 2,
+                isDynamicTheme = preferences[IS_DYNAMIC_THEME] ?: false
+            )
         }.first()
-        _themeMode.value = saved
+        _themeMode.value = saved.themeMode
+        _dynamicTheme.value = saved.isDynamicTheme
     }
 }
 

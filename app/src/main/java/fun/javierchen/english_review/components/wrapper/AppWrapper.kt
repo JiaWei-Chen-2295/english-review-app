@@ -13,6 +13,7 @@ import `fun`.javierchen.english_review.ui.theme.AppTheme
 fun AppWrapper(content: @Composable () -> Unit) {
     val systemDarkTheme = isSystemInDarkTheme()
     val themeMode by ThemeManager.themeMode
+    val isDynamicTheme by ThemeManager.isDynamicTheme
 
     val actualDarkTheme = when (themeMode) {
         0 -> false
@@ -20,7 +21,9 @@ fun AppWrapper(content: @Composable () -> Unit) {
         else -> systemDarkTheme
     }
 
-    AppTheme(darkTheme = actualDarkTheme) {
+    AppTheme(darkTheme = actualDarkTheme,
+        dynamicColor = isDynamicTheme
+        ) {
         content()
     }
 }

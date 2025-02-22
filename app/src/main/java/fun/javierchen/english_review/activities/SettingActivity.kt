@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -27,20 +27,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import `fun`.javierchen.english_review.common.ThemeManager
-import `fun`.javierchen.english_review.common.ThemeManager.themeMode
 import `fun`.javierchen.english_review.components.wrapper.AppWrapper
-import `fun`.javierchen.english_review.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    onThemeUpdated: (Boolean) -> Unit,
     onAccountClick: () -> Unit,
     modifier: Modifier
 ) {
@@ -94,6 +88,23 @@ fun SettingsScreen(
 
             HorizontalDivider()
 
+            // 主题颜色设置模块
+            ListItem(
+                headlineContent = { Text("主题颜色设置") },
+                supportingContent = { Text("是否开启动态取色") },
+                leadingContent = {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = null
+                    )
+                },
+                trailingContent = {
+                    DynamicThemeSegmentedSwitch()
+                }
+            )
+
+            HorizontalDivider()
+
             // 其他设置项
             ListItem(
                 headlineContent = { Text("隐私设置") },
@@ -121,7 +132,6 @@ class SettingActivity : ComponentActivity() {
                 val context = LocalContext.current
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     SettingsScreen(
-                        onThemeUpdated = { ThemeManager.toggleTheme(context, if(it) 1 else 0) },
                         onAccountClick = {
                             // 处理账户修改跳转逻辑
                         },
@@ -132,7 +142,6 @@ class SettingActivity : ComponentActivity() {
         }
     }
 }
-
 
 
 @Composable
@@ -155,4 +164,16 @@ fun ThemeModeSegmentedButton(modifier: Modifier = Modifier) {
             )
         }
     }
+}
+
+@Composable
+fun DynamicThemeSegmentedSwitch() {
+    val context = LocalContext.current
+    val currentMode by ThemeManager.isDynamicTheme
+    Switch(
+        checked = currentMode,
+        onCheckedChange = {
+            ThemeManager.toggleDynamicTheme(context, it)
+        }
+    )
 }
