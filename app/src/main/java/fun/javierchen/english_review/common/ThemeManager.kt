@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 // 全局常量
 private val THEME_MODE = intPreferencesKey("dark_theme")
-private val IS_DYNAMIC_THEME = booleanPreferencesKey("dark_theme")
+private val IS_DYNAMIC_THEME = booleanPreferencesKey("is_dynamic_theme")
 
 
 /**
