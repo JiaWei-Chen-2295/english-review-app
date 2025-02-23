@@ -8,4 +8,15 @@
     <string name="choose_file">选择文档 (Word/PDF/Excel)</string>
     <string name="else_input_text">或直接输入文本</string>
     <string name="input_type">可粘贴或输入学习内容...</string>
+    <string name="title_activity_setting">设置</string>
+    <string name="title_activity_login">登录</string>
+    <string name="prompt_email">邮箱</string>
+    <string name="prompt_password">密码</string>
+    <string name="action_sign_in">登录/注册</string>
+    <string name="action_sign_in_short">登录</string>
+    <string name="welcome">欢迎您！</string>
+    <string name="invalid_username">用户名无效</string>
+    <string name="invalid_password">密码长度需大于5位</string>
+    <string name="login_failed">登录失败</string>
+
 </resources>
