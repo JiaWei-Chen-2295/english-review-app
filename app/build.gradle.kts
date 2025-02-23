@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+    // 异步图片加载库
     implementation("io.coil-kt:coil-compose:2.6.0")
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.androidx.appcompat)
@@ -80,10 +81,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     // 数据持久化
     implementation("androidx.datastore:datastore-preferences:1.1.2")
-
     // optional - RxJava2 support
     implementation("androidx.datastore:datastore-preferences-rxjava2:1.1.2")
-
     // optional - RxJava3 support
     implementation("androidx.datastore:datastore-preferences-rxjava3:1.1.2")
 
@@ -94,7 +93,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
 
-
-//    用于顶部应用栏
+    //    用于顶部应用栏
     implementation(platform("androidx.compose:compose-bom:2025.01.01"))
 }

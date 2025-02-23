@@ -146,7 +146,7 @@ class SettingActivity : ComponentActivity() {
 
 
 @Composable
-fun ThemeModeSegmentedButton(modifier: Modifier = Modifier) {
+fun ThemeModeSegmentedButton() {
     val context = LocalContext.current
     val currentMode by ThemeManager.themeMode // 使用State解构
     val options = listOf("浅色", "深色", "系统")

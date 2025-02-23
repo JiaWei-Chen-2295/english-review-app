@@ -64,8 +64,3 @@ private fun fetchUser(account: String): User {
     )
 }
 
-
-fun isValid(account: String, password: String): Boolean {
-    return account.isNotEmpty() && password.isNotEmpty()
-}
-
