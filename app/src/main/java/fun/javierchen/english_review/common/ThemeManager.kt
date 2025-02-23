@@ -1,6 +1,7 @@
 package `fun`.javierchen.english_review.common
 
 import android.content.Context
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.preferences.core.Preferences
@@ -24,7 +25,7 @@ private val IS_DYNAMIC_THEME = booleanPreferencesKey("is_dynamic_theme")
  * 全局主题管理器
  */
 object ThemeManager {
-    private val _themeMode = mutableStateOf(2)
+    private val _themeMode: MutableState<Int> = mutableStateOf(2)
     private val _dynamicTheme = mutableStateOf(false)
     /**
      *  0=light, 1=dark, 2=system
@@ -32,8 +33,11 @@ object ThemeManager {
     val themeMode: State<Int> get() = _themeMode
     val isDynamicTheme: State<Boolean> get() = _dynamicTheme
 
-
-    // 需要传入 context 参数
+    /**
+     * 修改黑白主题
+     * @param context
+     * @param mode 0=light, 1=dark, 2=system
+     */
     fun toggleTheme(context: Context, mode: Int) {
         _themeMode.value = mode
         CoroutineScope(Dispatchers.IO).launch {
@@ -41,6 +45,11 @@ object ThemeManager {
         }
     }
 
+    /**
+     * 修改是否启用动态主题
+     * @param context
+     * @param isDynamicTheme true=启用，false=禁用
+     */
     fun toggleDynamicTheme(context: Context, isDynamicTheme: Boolean) {
         _dynamicTheme.value = isDynamicTheme
         CoroutineScope(Dispatchers.IO).launch {
