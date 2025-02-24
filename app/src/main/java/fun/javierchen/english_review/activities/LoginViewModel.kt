@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import `fun`.javierchen.english_review.common.LoginManager
 import `fun`.javierchen.english_review.model.User
+import `fun`.javierchen.english_review.model.manager.LoginUIState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,12 +12,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
-data class LoginUIState(
-    val isLoading: Boolean = false,
-    val isLoginSuccess: Boolean = false,
-    val errorMessage: String? = null
-)
-
+/**
+ * ViewModel == 表现层 --- 将数据层的结果转换为 UI 需要的数据
+ * MVVM 架构 单方向数据流
+ * 与 MVC 的Controller不同点:
+ *      - ViewModel 是数据转换器, Controller 是协调器 直接操控 Model 和 View
+ */
 class LoginViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUIState())
     val uiState = _uiState.asStateFlow()

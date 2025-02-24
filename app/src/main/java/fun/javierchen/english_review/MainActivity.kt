@@ -24,29 +24,33 @@ import `fun`.javierchen.english_review.ui.theme.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // 初始化主题管理器
-        lifecycleScope.launch(Dispatchers.IO) {
-            ThemeManager.initialize(applicationContext)
-        }
+        lifecycleScope.launch {
+            // 在 IO 线程执行初始化
+            withContext(Dispatchers.IO) {
+                ThemeManager.initialize(applicationContext)
+                LoginManager.initialize(applicationContext)
+            }
 
-
-        // 初始化登录管理器
-        LoginManager.initialize(applicationContext)
-
-        // 如果没有登录 就跳转回登录页面
-        if (!LoginManager.isLoggedIn.value) {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-        }
-
-        setContent {
-            AppWrapper { MainScreen() }
+            // 当完成初始化之后 再进行 UI 更新
+            LoginManager.initializationComplete.collect { completed ->
+                if (completed) {
+                    // 确保在此处获取最新状态
+                    if (!LoginManager.isLoggedIn.value) {
+                        startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                        finish()
+                    } else {
+                        setContent { AppWrapper { MainScreen() } }
+                    }
+                    return@collect
+                }
+            }
         }
     }
 }

@@ -13,15 +13,15 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStoreFile
-import `fun`.javierchen.english_review.common.LoginManager.getCredentials
 import `fun`.javierchen.english_review.model.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
@@ -41,7 +41,17 @@ private val USER_ID_KEY = longPreferencesKey("user_id")
 private val REMEMBER_ME_KEY = booleanPreferencesKey("remember_me")
 private val AUTO_LOGIN_KEY = booleanPreferencesKey("auto_login")
 
+/**
+ * 单例对象 LoginManager --- 数据层 --- 仅处理数据层逻辑
+ * 专注于核心的业务逻辑 与界面分离
+ * 单例对象 - 存活于整个生命周期
+ * 解耦 业务逻辑 与 界面
+ */
 object LoginManager {
+    // 初始化完成状态
+    private val _initializationComplete = MutableStateFlow(false)
+    val initializationComplete = _initializationComplete.asStateFlow()
+
     private val _account = mutableStateOf("")
     val account: State<String> get() = _account
 
@@ -75,14 +85,11 @@ object LoginManager {
                     CoroutineScope(Dispatchers.IO).launch {
                         loadPersistedData()
                     }
-
                     isInitialized = true
-
                 }
             }
         }
     }
-
 
     /**
      * 获取凭证方法
@@ -98,7 +105,6 @@ object LoginManager {
             }
         }.firstOrNull()
     }
-
 
     /**
      * 处理登录成功
@@ -157,13 +163,17 @@ object LoginManager {
 
     // 私有方法：加载持久化数据
     private suspend fun loadPersistedData() {
-        val prefs = dataStore.data.map { it }.firstOrNull() ?: return
+        try {
+            val prefs = dataStore.data.map { it }.firstOrNull() ?: return
 
-        _account.value = prefs[ACCOUNT_KEY] ?: ""
+            _account.value = prefs[ACCOUNT_KEY] ?: ""
 
-        when {
-            prefs[AUTO_LOGIN_KEY] == true -> autoLogin()
-            prefs[REMEMBER_ME_KEY] == true -> loadRememberedAccount()
+            when {
+                prefs[AUTO_LOGIN_KEY] == true -> autoLogin()
+                prefs[REMEMBER_ME_KEY] == true -> loadRememberedAccount()
+            }
+        } finally {
+            _initializationComplete.value = true // 标记初始化完成
         }
     }
 
@@ -171,12 +181,20 @@ object LoginManager {
     private suspend fun autoLogin() {
         getCredentials()?.let { (account, pwd) ->
             try {
-                // 实际验证逻辑（示例）
                 // TODO: 使用常量 替换为实际验证逻辑
                 val isValid = account == "admin" && pwd == "123456"
                 _isLoggedIn.value = isValid
-                if (!isValid) {
-                    logout() // 清除无效凭证
+                if (isValid) {
+                    // 保持与正常登录相同的处理流程
+                    onLoginSuccess(
+                        account = account,
+                        password = pwd,
+                        user = fetchUser(account), // 需要添加用户获取方法
+                        rememberMe = dataStore.data.first()[REMEMBER_ME_KEY] ?: false,
+                        autoLogin = dataStore.data.first()[AUTO_LOGIN_KEY] ?: true
+                    )
+                } else {
+                    logout()
                 }
             } catch (e: Exception) {
                 _isLoggedIn.value = false
@@ -219,3 +237,11 @@ object LoginManager {
 //    }
 //)
 
+private fun fetchUser(account: String): User {
+    return User(
+        id = 1,
+        username = "Javier Chen",
+        email = "javierchen@gmail.com",
+        avatar = "https://avatars.githubusercontent.com/u/10290408?v=4"
+    )
+}
