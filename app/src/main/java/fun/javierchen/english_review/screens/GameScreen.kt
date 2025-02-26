@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import `fun`.javierchen.english_review.R
 
@@ -35,7 +37,9 @@ fun DiceRollerApp() {
      *  - 使用 mutableStateOf() 函数刷新界面以创建可观察对象。
      */
 
+
     // todo: 关于 Modifier 的重组
+
     DiceWithButtonAndImage(
         modifier =
         Modifier
@@ -60,11 +64,21 @@ fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
         else -> R.drawable.dice_6
     }
 
+
     // 垂直布局 将形参中的 Modifier 导入
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+
+        Text(
+            text = "来摇下骰子决定今天学多少吧",
+            modifier = Modifier
+                .fillMaxWidth(),
+            textAlign = TextAlign.Center // 新增水平居中
+        )
+
         Image(
             painter = painterResource(imageResource),
             contentDescription = result.toString()

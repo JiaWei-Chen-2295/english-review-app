@@ -3,6 +3,7 @@ package `fun`.javierchen.english_review.model
 import ImportScreen
 import `fun`.javierchen.english_review.R
 import `fun`.javierchen.english_review.screens.DiceRollerApp
+import `fun`.javierchen.english_review.screens.MainStudyApp
 
 import `fun`.javierchen.english_review.screens.ProfileScreen
 
@@ -15,6 +16,13 @@ object NavigationItems {
             nameRes = R.string.home,
             route = "home",
             icon = R.drawable._home_2,
+            screen = { MainStudyApp() }
+        ),
+
+        BottomNavItem(
+            nameRes = R.string.roll,
+            route = "roll",
+            icon = R.drawable.game,
             screen = { DiceRollerApp() }
         ),
         BottomNavItem(
