@@ -1,6 +1,5 @@
 package `fun`.javierchen.english_review.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +14,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -23,15 +21,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `fun`.javierchen.english_review.R
 import `fun`.javierchen.english_review.util.HttpSingleton
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.Request
+import kotlinx.coroutines.withContext
 import java.io.IOException
+import okhttp3.Request
 
 @Composable
 fun MainStudyApp() {
@@ -57,10 +53,12 @@ fun MainStudyApp() {
                     CircularProgressIndicator()
                     Text("加载中...")
                 }
+
                 errorMessage != null -> {
                     Text("❌ 加载失败", color = Color.Red)
                     Text(errorMessage ?: "")
                 }
+
                 else -> {
                     Text("今日翻译", style = MaterialTheme.typography.titleLarge)
                     Spacer(Modifier.height(8.dp))
@@ -73,41 +71,56 @@ fun MainStudyApp() {
 
             Button(
                 onClick = {
-                    coroutineScope.launch {
+                    coroutineScope.launch(Dispatchers.IO) {
                         isLoading = true
                         errorMessage = null
                         try {
-                            translateText = getTodayTranslate()
+                            val result = getTodayTranslate()
+                            withContext(Dispatchers.Main) {
+                                translateText = result
+                            }
                         } catch (e: Exception) {
-                            errorMessage = when (e) {
-                                is IOException -> "网络连接异常"
-                                else -> "服务器错误：${e.message}"
+                            withContext(Dispatchers.Main) {
+                                errorMessage = when (e) {
+                                    is IOException -> "网络异常：${e.localizedMessage}"
+                                    else -> "服务器错误：${e.javaClass.simpleName}"
+                                }
                             }
                         } finally {
-                            isLoading = false
+                            withContext(Dispatchers.Main) {
+                                isLoading = false
+                            }
                         }
                     }
                 }
             ) {
                 Text("获取翻译")
             }
+
+
         }
     }
 }
 
-// 修改后的网络请求函数
 suspend fun getTodayTranslate(): String {
-    return try {
-        HttpSingleton.client.newCall(
-            Request.Builder()
-                .url("https://profile-avatar.csdnimg.cn/a7e8397ab14b4e07b0ee1e570638f9d3_javierchen_2295.jpg!1")
-                .build()
-        ).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("HTTP ${response.code}")
-            println(response)
-            response.body?.string() ?: throw IOException("Empty response")
+    return withContext(Dispatchers.IO) {
+        val request = Request.Builder()
+            .url("http://192.168.173.206:82/api/team/list")
+            .build()
+
+        try {
+            HttpSingleton.client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) {
+                    throw IOException("HTTP ${response.code}")
+                }
+                response.body?.string() ?: throw IOException("Empty response")
+            }
+        } catch (e: Exception) {
+            throw when (e) {
+                is IOException -> IOException("网络请求失败: ${e.message}")
+                else -> Exception("未知错误: ${e.message}")
+            }
         }
-    } catch (e: Exception) {
-        throw e // 将异常抛给调用方处理
     }
 }
+
