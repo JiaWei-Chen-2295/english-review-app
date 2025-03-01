@@ -4,7 +4,8 @@
         <domain includeSubdomains="true">profile-avatar.csdnimg.cn</domain>
         <domain includeSubdomains="true">baidu.com</domain>
         <domain includeSubdomains="true">httpbin.org</domain>
-        <domain includeSubdomains="true">192.168.173.206</domain>
+        <domain includeSubdomains="true">192.168.186.206</domain>
+        <domain includeSubdomains="true">api.deepseek.com</domain>
     </domain-config>
 
 </network-security-config>
